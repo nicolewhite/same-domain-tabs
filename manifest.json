@@ -1,0 +1,27 @@
+{
+  "name": "Manage Tabs by Domain",
+  "description": "Close and gather same-domain tabs.",
+  "version": "0.0.1",
+  "permissions": ["tabs", "commands"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "commands": {
+    "gather-tabs": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      },
+      "description": "Gather same-domain tabs."
+    },
+    "close-tabs": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X",
+        "mac": "Command+Shift+X"
+      },
+      "description": "Close same-domain tabs."
+    }
+  },
+  "manifest_version": 2
+}
