@@ -49,15 +49,18 @@ function handleCommand(activeTab, cmd) {
       closeTabs(tabs);
     } else if (cmd === "gather-tabs") {
       gatherTabs(tabs, activeTab.index);
-    } else {
-      return;
     }
   })
-};
+}
 
 chrome.commands.onCommand.addListener(function(cmd) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var activeTab = tabs[0];
-    handleCommand(activeTab, cmd);
+    handleCommand(tabs[0], cmd);
+  });
+});
+
+chrome.runtime.onMessage.addListener(function(request) {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    handleCommand(tabs[0], request.cmd);
   });
 });
