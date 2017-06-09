@@ -1,5 +1,6 @@
 {
   "name": "Manage Tabs by Domain",
+  "short_name": "Manage Tabs",
   "description": "Close and gather same-domain tabs.",
   "version": "0.0.1",
   "icons": {
