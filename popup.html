@@ -3,34 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <title>Manage Tabs by Domain</title>
-  <style>
-    body {
-      overflow: hidden;
-      margin: 0px;
-      padding: 0px;
-      background: white;
-    }
-    div:first-child {
-      margin-top: 0px;
-    }
-    div {
-      cursor: pointer;
-      text-align: left;
-      padding: 1px 3px;
-      font-family: sans-serif;
-      font-size: 0.8em;
-      width: 50px;
-      margin-top: 1px;
-    }
-    div:hover {
-      text-decoration: underline;
-    }
-  </style>
+
+  <link rel="stylesheet" href="bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="popup.js"></script>
 </head>
 <body>
-  <div id="close-tabs">Close</div>
-  <div id="gather-tabs">Gather</div>
-  <div id="gather-tabs-all">Gather All</div>
+  <div class="btn-group-vertical">
+    <button id="close-tabs" type="button" class="btn btn-default btn-sm" tabindex="-1">
+      <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+      Close
+    </button>
+    <button id="gather-tabs" type="button" class="btn btn-default btn-sm" tabindex="-1">
+      <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+      Gather
+    </button>
+    <button id="gather-tabs-all" type="button" class="btn btn-default btn-sm" tabindex="-1">
+      <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+      <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+      Gather All
+    </button>
+  </div>
 </body>
 </html>

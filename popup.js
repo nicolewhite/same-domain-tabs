@@ -4,8 +4,8 @@ function click(e) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var divs = document.querySelectorAll("div");
-  for (var i = 0; i < divs.length; i++) {
-    divs[i].addEventListener("click", click);
+  var buttons = document.querySelectorAll("button");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", click);
   }
 });
