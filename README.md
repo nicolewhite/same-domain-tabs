@@ -9,4 +9,4 @@ clicking on the extension's button and selecting Close, Gather, or Gather All.
 
 You can edit the hotkeys that close or gather tabs at the bottom of chrome://extensions/
 
-<p align="center"><img src="demo.gif" /></p>
+<p align="center"><img src="https://media.giphy.com/media/Vnebe1UyQ1F3G/giphy.gif" /></p>
