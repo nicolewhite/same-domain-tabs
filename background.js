@@ -3,6 +3,37 @@ function getDomain(tab) {
   return url.origin + "/*";
 }
 
+function tabsMatchingDomain(domain, tabs) {
+  var matching = [];
+
+  for (var i = 0; i < tabs.length; i++) {
+    var tab = tabs[i];
+
+    if (getDomain(tab) === domain) {
+      matching.push(tab);
+    }
+  }
+
+  return matching;
+}
+
+function separateActiveFromInactive(tabs) {
+  var inactiveTabs = [];
+  var activeTab;
+
+  for (var i = 0; i < tabs.length; i++) {
+    var tab = tabs[i];
+
+    if (tab.active) {
+      activeTab = tab;
+    } else {
+      inactiveTabs.push(tab);
+    }
+  }
+
+  return {"activeTab": activeTab, "inactiveTabs": inactiveTabs};
+}
+
 function closeTabs(tabs) {
   for (var i = 0; i < tabs.length; i++) {
     chrome.tabs.remove(tabs[i].id);
@@ -36,31 +67,54 @@ function gatherTabs(tabs, activeTabIndex) {
   }
 }
 
-function handleCommand(activeTab, cmd) {
-  var urlDomain = getDomain(activeTab);
-  
-  chrome.tabs.query({
-    currentWindow: true, 
-    active: false, 
-    pinned: false,
-    url: urlDomain
-  }, function(tabs) {
-    if (cmd === "close-tabs") {
-      closeTabs(tabs);
-    } else if (cmd === "gather-tabs") {
-      gatherTabs(tabs, activeTab.index);
+function gatherTabsAll(tabs) {
+  // For each unique domain, gather domains with the same domain around the left-most tab for that domain.
+  var idx = tabs[0].index;
+  var seenDomains = new Set();
+
+  for (var i = 0; i < tabs.length; i++) {
+    var tab = tabs[i];
+    var domain = getDomain(tab);
+
+    if (!seenDomains.has(domain)) {
+      var matching = tabsMatchingDomain(domain, tabs);
+
+      for (var j = 0; j < matching.length; j++) {
+        var matchingTab = matching[j];
+        var moveProperties = {index: idx};
+        chrome.tabs.move(matchingTab.id, moveProperties);
+        idx += 1;
+      }
+
+      seenDomains.add(domain);
     }
-  })
+  }
+}
+
+function handleCommand(cmd) {
+  chrome.tabs.query({currentWindow: true, pinned: false}, function(tabs) {
+    if (cmd === "gather-tabs-all") {
+      gatherTabsAll(tabs);
+    } else {
+      var tabPartition = separateActiveFromInactive(tabs);
+      var activeTab = tabPartition["activeTab"];
+      var inactiveTabs = tabPartition["inactiveTabs"];
+
+      var sameDomainTabs = tabsMatchingDomain(getDomain(activeTab), inactiveTabs);
+
+      if (cmd === "gather-tabs") {
+        gatherTabs(sameDomainTabs, activeTab.index);
+      } else if (cmd === "close-tabs") {
+        closeTabs(sameDomainTabs);
+      }
+    }
+  });
 }
 
 chrome.commands.onCommand.addListener(function(cmd) {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    handleCommand(tabs[0], cmd);
-  });
+  handleCommand(cmd);
 });
 
 chrome.runtime.onMessage.addListener(function(request) {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    handleCommand(tabs[0], request.cmd);
-  });
+  handleCommand(request.cmd);
 });

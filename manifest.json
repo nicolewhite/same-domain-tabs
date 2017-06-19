@@ -19,14 +19,21 @@
         "default": "Ctrl+Shift+A",
         "mac": "Command+Shift+A"
       },
-      "description": "Gather same-domain tabs."
+      "description": "Gather same-domain tabs around active tab."
     },
     "close-tabs": {
       "suggested_key": {
         "default": "Ctrl+Shift+X",
         "mac": "Command+Shift+X"
       },
-      "description": "Close same-domain tabs."
+      "description": "Close same-domain tabs as active tab."
+    },
+    "gather-tabs-all": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+L",
+        "mac": "Command+Shift+L"
+      },
+      "description": "Gather all same-domain tabs."
     }
   },
   "browser_action": {
